@@ -1,1 +1,339 @@
+/* =========================================================
+   firefox-tui
+   userChrome.css
 
+   Overlay in the spirit of system24 / Spicetify Text:
+   window chrome split into labeled panels
+   (tabs, nav, bookmarks, sidebar, main).
+
+   Requires:
+     about:config → toolkit.legacyUserProfileCustomizations.stylesheets = true
+
+   Install:
+     <profile>/chrome/userChrome.css
+     Restart Firefox fully after every change.
+
+   Window controls (− □ ×) live inside the tabs panel.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   Tokens
+   --------------------------------------------------------- */
+:root {
+  --tui-bg: #1c1b22;          /* window chrome around panels */
+  --tui-bg-2: #2b2a33;        /* panel fill */
+  --tui-bg-3: #151519;        /* url bar / selected tab */
+  --tui-fg: #cfcfcf;
+  --tui-muted: #8b8b8b;       /* panel labels */
+  --tui-border: #3f3e46;
+  --tui-accent: #a0a0a0;
+  --tui-danger: #5a2a2a;      /* close-button hover */
+  --tui-font: "DM Mono", "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+  --tui-pad: 8px;             /* inset from the window edge */
+  --tui-gap: 8px;             /* gap between panels */
+  --tui-label-size: 10px;
+}
+
+/* ---------------------------------------------------------
+   Shared chrome
+   --------------------------------------------------------- */
+#navigator-toolbox,
+#nav-bar,
+#PersonalToolbar,
+#TabsToolbar,
+#sidebar-box,
+#sidebar-header,
+#urlbar-input,
+#urlbar-input-container,
+.tab-label,
+.toolbarbutton-text,
+#PlacesToolbarItems {
+  font-family: var(--tui-font) !important;
+}
+
+#browser,
+#appcontent,
+#tabbrowser-tabpanels {
+  background: var(--tui-bg) !important;
+}
+
+/* labels sit on the panel border; do not clip them */
+#navigator-toolbox,
+#titlebar,
+#TabsToolbar,
+#nav-bar,
+#PersonalToolbar,
+#tabbrowser-tabbox,
+#sidebar-box {
+  overflow: visible !important;
+}
+
+#navigator-toolbox {
+  background: var(--tui-bg) !important;
+  padding: 10px var(--tui-pad) 0 var(--tui-pad) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#titlebar {
+  background: transparent !important;
+}
+
+.tab-background,
+toolbarbutton,
+.toolbarbutton-1,
+#identity-box,
+#urlbar-background {
+  border-radius: 0 !important;
+}
+
+/* Windows titlebar spacers push tabs off-center — drop them */
+.titlebar-spacer,
+.titlebar-spacer[type="pre-tabs"],
+.titlebar-spacer[type="post-tabs"] {
+  display: none !important;
+  width: 0 !important;
+  max-width: 0 !important;
+}
+
+/* ---------------------------------------------------------
+   tabs
+   One frame: tab strip + window caption buttons
+   --------------------------------------------------------- */
+#TabsToolbar {
+  position: relative !important;
+  border: 1px solid var(--tui-border) !important;
+  background: var(--tui-bg-2) !important;
+  margin: 0 0 var(--tui-gap) 0 !important;
+  padding: 0 2px 0 0 !important;
+  min-height: 36px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+
+#TabsToolbar-customization-target {
+  justify-content: flex-start !important;
+  flex: 1 1 auto !important;
+}
+
+#TabsToolbar::before {
+  content: "tabs";
+  position: absolute;
+  top: -7px;
+  left: 8px;
+  padding: 0 4px;
+  background: var(--tui-bg);
+  color: var(--tui-muted);
+  font-size: var(--tui-label-size);
+  line-height: 1;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+#tabbrowser-tabs {
+  position: relative !important;
+  border: none !important;
+  background: transparent !important;
+  margin: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+#tabbrowser-arrowscrollbox,
+#tabbrowser-tabs {
+  margin-inline-start: 0 !important;
+}
+
+.tabbrowser-tab {
+  margin-inline-start: 0 !important;
+}
+
+.tab-background {
+  margin-block: 2px !important;
+}
+
+.tabbrowser-tab[selected] .tab-background {
+  background: var(--tui-bg-3) !important;
+  border: 1px solid var(--tui-border) !important;
+  box-shadow: none !important;
+}
+
+/* caption buttons: inside the tabs frame, right, vertically centered */
+#TabsToolbar .titlebar-buttonbox-container {
+  margin-inline-start: auto !important;
+  align-self: center !important;
+  height: 28px !important;
+  padding-inline: 4px !important;
+}
+
+.titlebar-button {
+  width: 36px !important;
+  height: 28px !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.titlebar-close:hover {
+  background: var(--tui-danger) !important;
+}
+
+/* ---------------------------------------------------------
+   nav
+   Back / forward + address bar + page actions
+   --------------------------------------------------------- */
+#nav-bar {
+  position: relative !important;
+  background: var(--tui-bg-2) !important;
+  border: 1px solid var(--tui-border) !important;
+  border-radius: 0 !important;
+  margin: 0 0 var(--tui-gap) 0 !important;
+  padding-top: 1px !important;
+}
+
+#nav-bar::before {
+  content: "nav";
+  position: absolute;
+  top: -7px;
+  left: 8px;
+  padding: 0 4px;
+  background: var(--tui-bg);
+  color: var(--tui-muted);
+  font-size: var(--tui-label-size);
+  line-height: 1;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+#urlbar-background {
+  background: var(--tui-bg-3) !important;
+  border: 1px solid var(--tui-border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+#urlbar-input {
+  color: var(--tui-fg) !important;
+}
+
+#urlbar[focused="true"] > #urlbar-background,
+#urlbar[open] > #urlbar-background {
+  border-color: var(--tui-accent) !important;
+}
+
+/* ---------------------------------------------------------
+   bookmarks
+   Bookmarks toolbar (View → Toolbars → Bookmarks Toolbar)
+   --------------------------------------------------------- */
+#PersonalToolbar {
+  position: relative !important;
+  background: var(--tui-bg-2) !important;
+  border: 1px solid var(--tui-border) !important;
+  border-radius: 0 !important;
+  margin: 0 0 var(--tui-gap) 0 !important;
+  padding: 2px 8px !important;
+  min-height: 26px !important;
+}
+
+#PersonalToolbar::before {
+  content: "bookmarks";
+  position: absolute;
+  top: -7px;
+  left: 8px;
+  padding: 0 4px;
+  background: var(--tui-bg);
+  color: var(--tui-muted);
+  font-size: var(--tui-label-size);
+  line-height: 1;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+#PersonalToolbar toolbarbutton,
+#PlacesToolbarItems > toolbarbutton {
+  border-radius: 0 !important;
+}
+
+/* ---------------------------------------------------------
+   sidebar
+   Ctrl+B / Ctrl+Shift+H
+   --------------------------------------------------------- */
+#sidebar-box {
+  position: relative !important;
+  background: var(--tui-bg) !important;
+  border: 1px solid var(--tui-border) !important;
+  margin: 0 0 var(--tui-pad) var(--tui-pad) !important;
+}
+
+#sidebar-box::before {
+  content: "sidebar";
+  position: absolute;
+  top: -7px;
+  left: 8px;
+  padding: 0 4px;
+  background: var(--tui-bg);
+  color: var(--tui-muted);
+  font-size: var(--tui-label-size);
+  line-height: 1;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+#sidebar-header {
+  background: var(--tui-bg-2) !important;
+  border-bottom: 1px solid var(--tui-border) !important;
+}
+
+#sidebar-splitter {
+  border: none !important;
+  background: var(--tui-bg) !important;
+  width: var(--tui-gap) !important;
+}
+
+/* ---------------------------------------------------------
+   main
+   Page content
+   --------------------------------------------------------- */
+#tabbrowser-tabbox {
+  position: relative !important;
+  margin: 0 var(--tui-pad) var(--tui-pad) var(--tui-pad) !important;
+  border: 1px solid var(--tui-border) !important;
+  background: var(--tui-bg-2) !important;
+}
+
+#tabbrowser-tabbox::before {
+  content: "main";
+  position: absolute;
+  top: -7px;
+  left: 8px;
+  padding: 0 4px;
+  background: var(--tui-bg);
+  color: var(--tui-muted);
+  font-size: var(--tui-label-size);
+  line-height: 1;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------
+   find bar, status, popups
+   --------------------------------------------------------- */
+findbar {
+  background: var(--tui-bg-2) !important;
+  border-top: 1px solid var(--tui-border) !important;
+  font-family: var(--tui-font) !important;
+}
+
+#statuspanel-label {
+  font-family: var(--tui-font) !important;
+  background: var(--tui-bg-2) !important;
+  border: 1px solid var(--tui-border) !important;
+  color: var(--tui-fg) !important;
+  border-radius: 0 !important;
+}
+
+menupopup,
+panel,
+#appMenu-popup,
+#widget-overflow {
+  font-family: var(--tui-font) !important;
+  border-radius: 0 !important;
+}
