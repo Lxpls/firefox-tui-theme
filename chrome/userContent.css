@@ -1,1 +1,48 @@
+/* =========================================================
+   firefox-tui
+   userContent.css
 
+   Styles privileged about:* pages only.
+   Regular websites are not affected — use Stylus for those.
+   ========================================================= */
+
+@-moz-document url-prefix("about:") {
+  :root {
+    --in-content-page-background: #1c1b22 !important;
+    --in-content-page-color: #cfcfcf !important;
+    --in-content-box-background: #2b2a33 !important;
+    --in-content-box-border-color: #3f3e46 !important;
+  }
+
+  html,
+  body {
+    font-family: "DM Mono", "JetBrains Mono", "Cascadia Mono", Consolas, monospace !important;
+    background: #1c1b22 !important;
+    color: #cfcfcf !important;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit !important;
+    border-radius: 0 !important;
+  }
+}
+
+@-moz-document url("about:newtab"),
+               url("about:home"),
+               url("about:privatebrowsing") {
+  html,
+  body {
+    background: #151519 !important;
+    font-family: "DM Mono", "JetBrains Mono", Consolas, monospace !important;
+  }
+
+  .search-wrapper input,
+  .search-handoff-button,
+  .fake-textbox,
+  .search-inner-wrapper {
+    border-radius: 0 !important;
+  }
+}
